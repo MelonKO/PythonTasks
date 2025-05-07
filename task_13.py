@@ -19,48 +19,68 @@
 from functools import wraps
 import time
 from collections import OrderedDict
+from typing import Any
+
+
+class TimedCache:
+    def __init__(self, max_size: int | None, seconds: int | None):
+        if not isinstance(max_size, int):
+            self._max_size = None
+        else:
+            self._max_size = max_size
+
+        if not isinstance(seconds, int):
+            self._seconds = None
+        else:
+            self._seconds = seconds
+
+        self._cache = OrderedDict()
+
+    @staticmethod
+    def make_key(*args, **kwargs) -> tuple:
+        # Генерация уникального ключа на основе аргументов
+        key = (args, tuple(sorted(kwargs.items())))
+        return key
+
+    def check_cache(self, key: tuple) -> Any | None:
+        # Проверка истекшего времени устаревания
+        current_time = time.time()
+        for k in list(self._cache.keys()):
+            _, timestamp = self._cache[k]
+            if self._seconds is not None and (current_time - timestamp > self._seconds):
+                del self._cache[k]
+
+            # Проверка наличия ключа в кэше
+            if key in self._cache:
+                return self._cache[key][0]
+
+    def add(self, key: tuple, value):
+        # Ограничение размера кэша
+        if self._max_size is not None and len(self._cache) >= self._max_size:
+            # Удаление самого старого элемента
+            self._cache.popitem(last=False)
+
+        self._cache[key] = (value, time.time())
 
 
 def cached(max_size: int | None = None, seconds: int | None = None):
-    # Валидация параметров max_size и seconds
-    if not isinstance(max_size, int):
-        max_size = None
-    if not isinstance(seconds, int):
-        seconds = None
 
     def actual_decorator(func):
-        cache = OrderedDict()
+
+        cache = TimedCache(max_size, seconds)
 
         @wraps(func)
         def wrapper(*args, **kwargs):
-            # Генерация уникального ключа на основе аргументов
-            key = (args, tuple(sorted(kwargs.items())))
+            cache_key = cache.make_key(*args, **kwargs)
+            cached_result = cache.check_cache(cache_key)
+            if cached_result != None:
+                return cached_result
 
-            # Проверка истекшего времени устаревания
-            current_time = time.time()
-            for k in list(cache.keys()):
-                _, timestamp = cache[k]
-                if seconds is not None and current_time - timestamp > seconds:
-                    del cache[k]
-
-            # Проверка наличия ключа в кэше
-            if key in cache:
-                return cache[key][0]
-
-            # Вычисление результата
             result = func(*args, **kwargs)
-
-            # Ограничение размера кэша
-            if max_size is not None and len(cache) >= max_size:
-                # Удаление самого старого элемента
-                cache.popitem(last=False)
-
-            cache[key] = (result, current_time)
-
+            cache.add(cache_key, result)
             return result
 
         return wrapper
-
     return actual_decorator
 
 
@@ -74,16 +94,6 @@ def slow_function(x):
 print(slow_function(2))  # Вывод: "Вычисляю для 2..." → 4
 # Повторный вызов с теми же аргументами — берётся из кэша
 print(slow_function(2))  # Вывод: 4 (без вычисления)
-# Забиваем буффер
-# len(buff) == 1
-print(slow_function(1))  # len(buff) == 2
-print(slow_function(3))  # len(buff) == 3
-print(slow_function(4))  # len(buff) == 3 (стёрся кэш для 2)
-print(slow_function(3))  # len(buff) == 3 (кэш для 3 остался)
-
-# len(buff) == 3 (стёрся кэш для 1, снова добавился для 2)
-print(slow_function(2))
-
 # Через 15 секунд кэш устареет, и будет новое вычисление
 time.sleep(15)
 print(slow_function(2))  # Вывод: "Вычисляю для 2..." → 4
