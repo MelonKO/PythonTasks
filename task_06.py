@@ -31,9 +31,7 @@ def format_winner(winner: list) -> str:
 
 
 def rps_game_winner(players: list[list]) -> str:
-    if len(players) == 0:  # check that we have players
-        return ""
-    if len(players) > 2:  # raise exception if we have more then two players
+    if len(players) == 0 or len(players) > 2:  # raise exception if we have more then two players
         raise WrongNumberOfPlayersError()
 
     first_player = players[0]
