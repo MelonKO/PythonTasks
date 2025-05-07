@@ -15,11 +15,11 @@ import unittest
 #   игрока походили одинаково - выигрывает первый игрок.
 
 
-class WrongNumberOfPlayersError(Exception):
+class WrongNumberOfPlayersError(ValueError):
     pass
 
 
-class NoSuchStrategyError(Exception):
+class NoSuchStrategyError(ValueError):
     pass
 
 
@@ -32,17 +32,19 @@ def format_winner(winner: list) -> str:
 
 def rps_game_winner(players: list[list]) -> str:
     if len(players) == 0 or len(players) > 2:  # raise exception if we have more then two players
-        raise WrongNumberOfPlayersError()
+        raise WrongNumberOfPlayersError("Number of players should be 1 or 2")
 
     first_player = players[0]
     if first_player[1] not in strats:  # check first player's startegy
-        raise NoSuchStrategyError
+        raise NoSuchStrategyError(
+            "First player tried to use non existing strategy")
     if len(players) == 1:  # if we have only one player, it's a winner
         return format_winner(first_player)
 
     second_player = players[1]  # get payer 2 and check he's startegy
     if second_player[1] not in strats:
-        raise NoSuchStrategyError()
+        raise NoSuchStrategyError(
+            "Second player tried to use non existing strategy")
 
     # normal check which player should win
     fp_start_ind = strats.index(first_player[1])
