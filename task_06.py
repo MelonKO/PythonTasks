@@ -26,22 +26,33 @@ class NoSuchStrategyError(Exception):
 strats = ("R", "S", "P")
 
 
-def rps_game_winner(players: list[list]):
-    if len(players) > 2:  # а что если 1 игрок?
+def format_winner(winner: list) -> str:
+    return f"{winner[0]} {winner[1]}"
+
+
+def rps_game_winner(players: list[list]) -> str:
+    if len(players) == 0:  # check that we have players
+        return ""
+    if len(players) > 2:  # raise exception if we have more then two players
         raise WrongNumberOfPlayersError()
 
     first_player = players[0]
-    second_player = players[1]
+    if first_player[1] not in strats:  # check first player's startegy
+        raise NoSuchStrategyError
+    if len(players) == 1:  # if we have only one player, it's a winner
+        return format_winner(first_player)
 
-    if first_player[1] not in strats or second_player[1] not in strats:
+    second_player = players[1]  # get payer 2 and check he's startegy
+    if second_player[1] not in strats:
         raise NoSuchStrategyError()
 
+    # normal check which player should win
     fp_start_ind = strats.index(first_player[1])
     sp_start_ind = strats.index(second_player[1])
 
     if (fp_start_ind == sp_start_ind) or ((fp_start_ind + 1) % 3 == sp_start_ind):
-        return str(first_player[0]) + " " + str(first_player[1])
-    return str(second_player[0]) + " " + str(second_player[1])
+        return format_winner(first_player)
+    return format_winner(second_player)
 
 
 class TestRPS(unittest.TestCase):
