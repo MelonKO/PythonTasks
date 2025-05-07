@@ -19,10 +19,10 @@ class JellyBean(Dessert):
 
     @flavor.setter
     def flavor(self, new_value: str):
-        if isinstance(new_value, (str)):
+        if isinstance(new_value, str):
             self.__flavor = new_value
         else:
-            self.__flavor = ""
+            raise TypeError("Flavor should be a str type")
 
     def is_delicious(self) -> bool:
         return not (self.flavor == "black licorice")

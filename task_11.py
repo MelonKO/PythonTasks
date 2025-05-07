@@ -17,10 +17,10 @@ class Dessert:
 
     @name.setter
     def name(self, new_value):
-        if isinstance(new_value, (str)):
+        if isinstance(new_value, str):
             self.__name = new_value
         else:
-            self.__name = ""
+            raise TypeError("Name should be a str type")
 
     @property
     def calories(self):
@@ -28,7 +28,10 @@ class Dessert:
 
     @calories.setter
     def calories(self, new_value):
-        self.__calories = max(0, new_value)
+        if isinstance(new_value, int):
+            self.__calories = max(0, new_value)
+        else:
+            raise TypeError("Calories should be an int type")
 
     def is_healthy(self) -> bool:
         return self.calories < 200
@@ -61,8 +64,14 @@ class TastyTest(unittest.TestCase):
         self.assertTrue(unknow_dessert.is_delicious()
                         and cheesecake.is_delicious())
 
-        bad_dessert = Dessert(5, -5)
-        self.assertEqual(bad_dessert.name, "")
+        with self.assertRaises(TypeError):
+            bad_dessert = Dessert(5, -5)
+
+        with self.assertRaises(TypeError):
+            bad_dessert = Dessert("abba", -5.0)
+
+        bad_dessert = Dessert("Some new bad desert", -5)
+        self.assertEqual(bad_dessert.name, "Some new bad desert")
         self.assertEqual(bad_dessert.calories, 0)
 
 
