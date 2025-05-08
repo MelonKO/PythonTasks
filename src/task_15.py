@@ -84,9 +84,6 @@ class BlockTranspositionCipher_Iter:
 
 class BlockTranspositionCipher:
 
-    __alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k',
-                  'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
-
     def __init__(self, text: str, key: str, decrypt: bool = False) -> None:
         #  Convert key to int array
         self.validate_key(key)
@@ -153,6 +150,6 @@ class BlockTranspositionCipher:
             raise BadKeyError(
                 "Key contains duplicated chars. Each character in the key should be unique.")
 
-        if not all((char in BlockTranspositionCipher.__alphabet) for char in key):
+        if not all('a' <= char <= 'z' for char in key):
             raise BadKeyError(
                 "Key contains invalid characters (not from English alphabet).")
