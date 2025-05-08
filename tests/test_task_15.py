@@ -1,5 +1,5 @@
 import unittest
-from src.task_15 import BlockTranspositionCipher
+from src.task_15 import BlockTranspositionCipher, BadKeyError
 
 
 class TestTransposition(unittest.TestCase):
@@ -7,8 +7,11 @@ class TestTransposition(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         print()
-        print("="*4, "TASK 15", "="*4)
         return super().setUpClass()
+
+    def test_invalid_key(self):
+        with self.assertRaises(BadKeyError):
+            cipher = BlockTranspositionCipher("helloworld", "авб")
 
     def test1(self):
         cipher = BlockTranspositionCipher("helloworld", "acb")
@@ -18,7 +21,9 @@ class TestTransposition(unittest.TestCase):
         cipher = BlockTranspositionCipher("hlelwoolrd  ", "acb", decrypt=True)
         self.assertEqual("".join(cipher), "helloworld")
 
-    def test3(self):
+    @unittest.skipIf(True, "Skipped to keep stdout clean.")
+    def test_with_print(self):
+        print("="*4, "TASK 15", "="*4)
         # Пример 1: Шифрование с явной итерацией по блокам
         text = "HELLOWORLD"
         key = "bAc"
