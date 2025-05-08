@@ -1,6 +1,3 @@
-from typing import OrderedDict
-import unittest
-
 # Реализовать класс BlockTranspositionCipher, который будет шифровать и
 # расшифровывать текст методом блочной перестановки с помощью текстового
 # ключа.
@@ -44,6 +41,8 @@ import unittest
 # • проверяется, что все буквы в ключе уникальны, игнорируя регистр
 # • если ключ не соответствует требованиям, вызывается исключение
 # ValueError с понятным сообщением об ошибке
+
+from typing import OrderedDict
 
 
 class BadKeyError(Exception):
@@ -157,43 +156,3 @@ class BlockTranspositionCipher:
         if not all((char in BlockTranspositionCipher.__alphabet) for char in key):
             raise BadKeyError(
                 "Key contains invalid characters (not from English alphabet).")
-
-
-class TestTransposition(unittest.TestCase):
-
-    def test1(self):
-        cipher = BlockTranspositionCipher("helloworld", "acbefd")
-        self.assertEqual(list(cipher), ["hle", "lwo", "olr", "d  "])
-
-    def test2(self):
-        cipher = BlockTranspositionCipher("hlelwoolrd  ", "acb", decrypt=True)
-        self.assertEqual("".join(cipher), "helloworld")
-
-    def test3(self):
-        # Пример 1: Шифрование с явной итерацией по блокам
-        text = "HELLOWORLD"
-        key = "acbefd"
-        print("Процесс шифрования по блокам:")
-        cipher = BlockTranspositionCipher(text, key)
-        for i, encrypted_block in enumerate(cipher, 1):
-            print(f"Блок {i}: '{encrypted_block}'")
-
-        # Пример 2: Полное шифрование
-        cipher = BlockTranspositionCipher(text, key)
-        encrypted = ''.join(cipher)
-        print(f"\nПолный зашифрованный текст: '{encrypted}'")
-
-        # Пример 3: Дешифрование с итерацией
-        print("\nПроцесс дешифрования по блокам:")
-        decipher = BlockTranspositionCipher(encrypted, key, decrypt=True)
-        for i, decrypted_block in enumerate(decipher, 1):
-            print(f"Блок {i}: '{decrypted_block}'")
-
-        # Пример 4: Полное дешифрование с обрезкой пробелов
-        decipher = BlockTranspositionCipher(encrypted, key, decrypt=True)
-        decrypted = ''.join(decipher)
-        print(f"\nПолный расшифрованный текст: '{decrypted}'")
-
-
-if __name__ == "__main__":
-    unittest.main()

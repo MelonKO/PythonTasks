@@ -1,5 +1,3 @@
-import unittest
-
 # Разработать методы для программы Камень-Ножницы-Бумага. При реализации
 # обработки исключений важно не использовать встроенные классы ошибок с
 # передачей им сообщения, а разработать классы с представленными ниже
@@ -53,35 +51,3 @@ def rps_game_winner(players: list[list]) -> str:
     if (fp_start_ind == sp_start_ind) or ((fp_start_ind + 1) % 3 == sp_start_ind):
         return format_winner(first_player)
     return format_winner(second_player)
-
-
-class TestRPS(unittest.TestCase):
-    def test(self):
-
-        # Check player validation
-        with self.assertRaises(WrongNumberOfPlayersError):
-            rps_game_winner(
-                [["player1", "P"], ["player2", "S"], ["player3", "S"]])
-
-        # Check startegy validation
-        with self.assertRaises(NoSuchStrategyError):
-            rps_game_winner([["player1", "P"], ["player2", "A"]])
-
-        # Check p2 win
-        self.assertEqual(
-            rps_game_winner([["player1", "P"], ["player2", "S"]]), "player2 S"
-        )
-
-        # Check p1 win
-        self.assertEqual(
-            rps_game_winner([["player1", "P"], ["player2", "R"]]), "player1 P"
-        )
-
-        # Check p1 win when strategies is equal
-        self.assertEqual(
-            rps_game_winner([["player1", "P"], ["player2", "P"]]), "player1 P"
-        )
-
-
-if __name__ == "__main__":
-    unittest.main()

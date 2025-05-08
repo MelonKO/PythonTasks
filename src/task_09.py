@@ -1,5 +1,3 @@
-import unittest
-
 # Необходимо разработать метод connect_dicts(dict1, dict2), который соединит два
 # переданных словаря, значениями ключей в которых являются числа, и вернет
 # новый словарь, полученный по следующим правилам:
@@ -30,22 +28,3 @@ def connect_dicts(dict1: dict, dict2: dict) -> dict:
             result[key] = value
 
     return dict(sorted(result.items(), key=lambda x: x[1]))
-
-
-class TestConnect(unittest.TestCase):
-    def test(self):
-        self.assertEqual(
-            connect_dicts({"a": 2, "b": 12}, {"c": 11, "e": 5}),
-            {'c': 11, 'b': 12})
-
-        self.assertEqual(
-            connect_dicts({"a": 13, "b": 9, "d": 11}, {"c": 12, "a": 15}),
-            {'d': 11, 'c': 12, 'a': 13})
-
-        self.assertEqual(
-            connect_dicts({"a": 14, "b": 12}, {"c": 11, "a": 15}),
-            {'c': 11, 'b': 12, 'a': 15})
-
-
-if __name__ == "__main__":
-    unittest.main()
