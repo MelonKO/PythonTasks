@@ -2,9 +2,10 @@
 # max_odd(array), который определит максимальный нечетный элемент
 # (21.000 = 21 и тоже считается нечетным элементом).
 # Вернуть None, если таких элементов нет в переданном массиве.
+from typing import List, Union
 
 
-def max_odd(lst: list) -> int | float | None:
+def max_odd(lst: List) -> Union[int, float, None]:
     filtered = []
     for x in lst or []:
         if isinstance(x, int):

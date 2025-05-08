@@ -11,9 +11,9 @@ class DatTest(unittest.TestCase):
         return super().setUpClass()
 
     def test(self):
-        print(date_in_future(-1))
-        print(date_in_future(None))
-        print(date_in_future(1))
+        print("Yesterday:", date_in_future(-1))
+        print("Today:", date_in_future(None))
+        print("Tomorrow:", date_in_future(1))
 
 
 if __name__ == "__main__":

@@ -6,9 +6,10 @@
 # значения при определении анаграмм.
 
 from collections import defaultdict
+from typing import List
 
 
-def combine_anagrams(words_array: list[str]) -> list[list[str]]:
+def combine_anagrams(words_array: List[str]) -> List[List[str]]:
     anagram_groups = defaultdict(list)
     for word in words_array:
         key = ''.join(sorted(word.lower()))

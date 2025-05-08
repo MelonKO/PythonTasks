@@ -42,7 +42,7 @@
 # • если ключ не соответствует требованиям, вызывается исключение
 # ValueError с понятным сообщением об ошибке
 
-from typing import OrderedDict
+from typing import OrderedDict, List
 
 
 class BadKeyError(Exception):
@@ -54,7 +54,7 @@ class BadKeyError(Exception):
 
 class BlockTranspositionCipher_Iter:
 
-    def __init__(self, text: list[str], key: list[int], decrypt: bool) -> None:
+    def __init__(self, text: List[str], key: List[int], decrypt: bool) -> None:
         self._blocked_text = text
         self._key = key if not decrypt else self.inverse_key(key)
         self._index = 0
@@ -110,7 +110,7 @@ class BlockTranspositionCipher:
         return self.__blocked_text
 
     @staticmethod
-    def __make_blocks(text: str, key: list[int]) -> list[str]:
+    def __make_blocks(text: str, key: List[int]) -> List[str]:
         block_size = len(key)
         blocks = []
         for i in range(0, len(text), block_size):

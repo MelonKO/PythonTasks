@@ -4,13 +4,14 @@
 # 22:33:44'.
 
 from datetime import datetime, timedelta
+from typing import Union
 
 
 def formatDateTime(date: datetime) -> str:
     return date.strftime("%d-%m-%Y %H:%M:%S")
 
 
-def date_in_future(offest: int | None):
+def date_in_future(offest: Union[int, None]):
     now = datetime.now()
     if not isinstance(offest, int):
         return formatDateTime(now)

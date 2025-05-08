@@ -12,6 +12,8 @@
 #   • в иных случаях необходимо вернуть имя и ход победителя, если оба
 #   игрока походили одинаково - выигрывает первый игрок.
 
+from typing import List
+
 
 class WrongNumberOfPlayersError(ValueError):
     pass
@@ -24,11 +26,11 @@ class NoSuchStrategyError(ValueError):
 strats = ("R", "S", "P")
 
 
-def format_winner(winner: list) -> str:
+def format_winner(winner: List[str]) -> str:
     return f"{winner[0]} {winner[1]}"
 
 
-def rps_game_winner(players: list[list]) -> str:
+def rps_game_winner(players: List[List[str]]) -> str:
     if len(players) == 0 or len(players) > 2:  # raise exception if we have more then two players
         raise WrongNumberOfPlayersError("Number of players should be 1 or 2")
 

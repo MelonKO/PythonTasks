@@ -2,9 +2,9 @@
 # для определения элементов из массива list, значения которого входят в
 # указанный диапазон range. Если не передан хотя бы один из параметров, то
 # должен вернуться пустой массив.
+from typing import List, Union
 
-
-def coincidence(lst: list | None = None, rng: range | None = None) -> list[int | float]:
+def coincidence(lst: Union[List, None] = None, rng: Union[range, None] = None) -> List[Union[int, float]]:
     if lst is None or rng is None:
         return []
     return [
