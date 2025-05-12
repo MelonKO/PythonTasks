@@ -7,8 +7,12 @@ def sort_list(lst: list):
     if not len(lst):
         return
 
-    _min = min(lst)
-    _max = max(lst)
+    _min = _max = lst[0]
+    for elem in lst:
+        if elem > _max:
+            _max = elem
+        if elem < _min:
+            _min = elem
 
     for i in range(len(lst)):
         if lst[i] == _max:
