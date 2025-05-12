@@ -6,7 +6,7 @@ This repository contains a number of tasks for learning Python.
 The text of the problem with the proposed solution is located in the `src` directory under the names `task_[0-15]`. 
 
 ## Tests
-The tests directory contains unit `tests` for each task under the name `test_task_[0-15]`, respectively. 
+The `tests` directory contains unit tests for each task under the name `test_task_[0-15]`, respectively.
 
 The tests were run on two versions of Python: 3.12 and 3.8.
 
