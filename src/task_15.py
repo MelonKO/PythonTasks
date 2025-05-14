@@ -39,17 +39,13 @@
 # Валидации и работа с ошибками:
 # • проверяется, что ключ состоит только из букв английского алфавита
 # • проверяется, что все буквы в ключе уникальны, игнорируя регистр
-# • если ключ не соответствует требованиям, вызывается исключение
-# ValueError с понятным сообщением об ошибке
+# • если ключ не соответствует требованиям, вызывается исключение ValueError с понятным сообщением об ошибке
 
 from typing import OrderedDict, List
 
 
-class BadKeyError(Exception):
-
-    def __init__(self, message: str = "Invalid key"):
-        self.message = message
-        super().__init__(self.message)
+class BadKeyError(ValueError):
+    pass
 
 
 class BlockTranspositionCipher_Iter:
